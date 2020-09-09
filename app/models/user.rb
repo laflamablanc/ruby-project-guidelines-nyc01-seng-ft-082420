@@ -44,6 +44,7 @@ class User < ActiveRecord::Base
   def rate_playlist(playlist:, rating:)
     up = UserPlaylist.find_or_create_by(user: self, playlist: playlist)
     up.rating = rating
+    up.save
   end
 
 end

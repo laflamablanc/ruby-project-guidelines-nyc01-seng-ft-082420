@@ -5,7 +5,7 @@ class Playlist < ActiveRecord::Base
   has_many :users, through: :user_playlists
 
   def average_rating
-    userplaylist = UserPlaylists.all.filter{|up| up.playlist == self}
+    userplaylist = UserPlaylist.all.filter{|up| up.playlist == self && up.rating != nil}
     avg = userplaylist.sum{|up| up.rating}/userplaylist.count
     avg
   end

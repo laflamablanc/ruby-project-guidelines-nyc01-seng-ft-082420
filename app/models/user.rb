@@ -2,20 +2,18 @@ class User < ActiveRecord::Base
   has_many :user_playlists
   has_many :playlists, through: :user_playlists
 
-  def create_playlist
+  def create_playlist(name:, mood:)
     #puts "name:"
     #name = gets.chomp
-    name = "Playlist"
     #puts "type:"
     #type = gets.chomp
-    type1 = "Type 1"
-    playlist = Playlist.create(name: name, mood: type1, creator_id: self.id)
+    playlist = Playlist.create(name: name, mood: mood, creator_id: self.id)
     UserPlaylist.create(user: self, playlist: playlist)
   end
 
   def add_song(song:, playlist:)
     if playlist.creator_id == self.id
-      PlaylistSongs.find_or_create_by(song: song, playlist: playlist)
+      PlaylistSong.find_or_create_by(song: song, playlist: playlist)
     else
       puts "This isn't your playlist!"
     end
@@ -23,8 +21,8 @@ class User < ActiveRecord::Base
 
   def remove_song(song:, playlist:)
     if playlist.creator_id == self.id
-      if PlaylistSongs.find_by(song: song, playlist: playlist) != nil
-        PlaylistSongs.find_by(song: song, playlist: playlist).delete
+      if PlaylistSong.find_by(song: song, playlist: playlist) != nil
+        PlaylistSong.find_by(song: song, playlist: playlist).delete
       else
         puts "Song not found"
       end
@@ -41,6 +39,11 @@ class User < ActiveRecord::Base
     else
       puts "This isn't your playlist!"
     end
+  end
+
+  def rate_playlist(playlist:, rating:)
+    up = UserPlaylist.find_or_create_by(user: self, playlist: playlist)
+    up.rating = rating
   end
 
 end

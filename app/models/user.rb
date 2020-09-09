@@ -31,9 +31,9 @@ class User < ActiveRecord::Base
     end
   end
 
-  def delete_playlist(playlist)
+  def delete_playlist(playlist:)
     if playlist.creator_id == self.id
-      all_ps = PlaylistSongs.all.filter{|ps| ps.playlist == playlist}
+      all_ps = PlaylistSong.all.filter{|ps| ps.playlist == playlist}
       all_ps.each{|ps| ps.delete}
       playlist.delete
     else

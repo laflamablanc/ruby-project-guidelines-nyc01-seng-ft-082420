@@ -1,0 +1,5 @@
+[#<Song:0x00007fdbf3182d70 id: 2, name: "Sugar Magnolia", genre: "Stage And Screen">,
+ #<Song:0x00007fdbf3182c58 id: 3, name: "Playing in the Band", genre: "Funk">,
+ #<Song:0x00007fdbf3182b18 id: 4, name: "Sugaree", genre: "Non Music">,
+ #<Song:0x00007fdbf31829b0 id: 5, name: "Ripple", genre: "Rap">,
+ #<Song:0x00007fdbf31828c0 id: 6, name: "Alive", genre: "Hip Hop">]

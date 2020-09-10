@@ -1,6 +1,4 @@
-require_relative '../config/environment'
-
-require './config/environment.rb'
+require_relative '../config/environment.rb'
 require "tty-prompt"
 require "pry"
 
@@ -60,8 +58,8 @@ if user != nil
       end
 
     elsif selection == "Delete Playlist"
-      choices = user.playlists.map{|pl| pl.name}
-      playlist_select = prompt.enum_select("Which playlist", choices)
+      choice = user.playlists.map{|pl| pl.name}
+      playlist_select = prompt.enum_select("Which playlist", choice)
       playlist = Playlist.all.find{|pl| pl.name == playlist_select}
       user.delete_playlist(playlist: playlist)
     end

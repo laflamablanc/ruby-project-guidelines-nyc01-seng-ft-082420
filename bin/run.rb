@@ -1,8 +1,66 @@
 require_relative '../config/environment'
 
-user = User.new()
-user.create_playlist
-user.playlists
-john.add_song(song:song1,playlist:play1)
+require './config/environment.rb'
+require "tty-prompt"
+require "pry"
+
+prompt = TTY::Prompt.new
+user = User.all[0]
+
+if user != nil
+  choices = ("Create Playlist,See All Existing Playlists,See All Songs,Rate an Existing Playlist,Edit One of my Playlists,Delete Playlist" ).split(",")
+  selection = prompt.enum_select("What would you like to do?", choices)
+  if selection == "Create Playlist"
+    name = prompt.ask("Playlist name?")
+    mood = prompt.select("Playlist mood?", %w(Happy Sad Workout Party))
+    user.create_playlist(name:name, mood:mood)
+  elsif selection == "See All Existing Playlists"
+    playlist_choices = Playlist.all.map{|pl| pl.name }
+    playlist_selection = prompt.select("Select the playlist", playlist_choices)
+    playlist = Playlist.all.find{|pl| pl.name ==  playlist_selection}
+    playlist.songs.each{|song| puts "#{song.name}\n"}
+  elsif selection == "See All Songs"
+    p Song.all.map{|song| song.name }
+  elsif selection == "Rate an Existing Playlist"
+    name = prompt.ask("What is the name of the playlist?")
+    rating = prompt.ask("How much do you want to rate (1-5)?")
+    playlist = Playlist.all.find{|pl| pl.name == name}
+    user.rate_playlist(rating: rating, playlist:playlist)
+  elsif selection == "Edit One of my Playlists"
+    choices = user.playlists.map{|pl| pl.name}
+    playlist_name = prompt.enum_select("Which playlist", choices)
+    playlist = Playlist.find{|pl| pl.name == playlist_name}
+    songs = playlist.songs.map do |song|
+      #"#{song.artist} - #{song.name}"
+      song.name
+    end
+    add_remove = prompt.select("add/remove", %w(add remove))
+    if add_remove == "add"
+      song_get = prompt.ask("What's the song name?")
+      find_song = Song.all.find{|song| song.name == song_get}
+      if find_song != nil
+        user.add_song(song: find_song, playlist: playlist)
+      else
+        puts "This song is not found"
+      end
+    else
+      song_get = prompt.ask("What's the song name?")
+      find_song = Song.all.find{|song| song.name == song_get}
+      if find_song != nil
+        user.remove_song(song: find_song, playlist: playlist)
+      else
+        puts "This song is not found"
+      end
+    end
+  elsif selection == "Delete Playlist"
+    choices = user.playlists.map{|pl| pl.name}
+    playlist_select = prompt.enum_select("Which playlist", choices)
+    playlist = Playlist.all.find{|pl| pl.name == playlist_select}
+    user.delete_playlist(playlist: playlist)
+  end
+else
+  puts "User not found!"
+end
+
 
 puts "HELLO WORLD"

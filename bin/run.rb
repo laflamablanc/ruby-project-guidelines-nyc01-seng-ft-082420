@@ -61,6 +61,3 @@ if user != nil
 else
   puts "User not found!"
 end
-
-
-puts "HELLO WORLD"

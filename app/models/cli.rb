@@ -17,8 +17,17 @@ class CLI
         if selection == "Create Playlist"
           name = prompt.ask("Playlist name?")
           mood = prompt.select("Playlist mood?", %w(Happy Sad Workout Party))
-          user.create_playlist(name:name, mood:mood)
-
+          playlist = user.create_playlist(name:name, mood:mood)
+          add_or_not = prompt.yes?("Do you want to add songs to it?")
+          if add_or_not == true
+            song_get = prompt.ask("What's the song name?")
+            find_song = Song.all.find{|song| song.name == song_get}
+            if find_song != nil
+              user.add_song(song: find_song, playlist: playlist)
+            else
+              puts "This song is not found"
+            end
+          end
         elsif selection == "See All Existing Playlists"
           playlist_choices = Playlist.all.map{|pl| pl.name }
           playlist_selection = prompt.select("Select the playlist", playlist_choices)
@@ -27,8 +36,24 @@ class CLI
           # playlist.songs.each{|song| puts "#{song.artist} - #{song.name}\n"}
           playlist.display_songs
 
+          if Playlist.all != []
+            playlist_choices = Playlist.all.map{|pl| pl.name }
+            playlist_selection = prompt.select("Select the playlist", playlist_choices)
+            # playlist = Playlist.all.find{|pl| pl.name ==  playlist_selection}
+            playlist = Playlist.find_playlist(playlist_selection)
+            # playlist.songs.each{|song| puts "#{song.artist} - #{song.name}\n"}
+            playlist.display_songs
+          else
+            puts "No playlist available"
+          end
+
         elsif selection == "See All Songs"
-          p Song.all.map{|song| "#{song.artist} - #{song.name}" }
+          if Song.all != []
+            Song.all.each{|song| puts "#{song.artist} - #{song.name}" }
+          else
+            puts "No Songs Found"
+          end
+
 
         elsif selection == "Rate an Existing Playlist"
           name = prompt.ask("What is the name of the playlist?")
@@ -52,19 +77,19 @@ class CLI
             find_song = Song.all.find{|song| song.name == song_get}
             if find_song != nil
               user.add_song(song: find_song, playlist: playlist)
+              playlist.display_songs
             else
               puts "This song is not found"
             end
-            # playlist.display_songs
           else
             song_get = prompt.ask("What's the song name?")
             find_song = Song.all.find{|song| song.name == song_get}
             if find_song != nil
               user.remove_song(song: find_song, playlist: playlist)
+              playlist.display_songs
             else
               puts "This song is not found"
             end
-
           end
           playlist.display_songs
 

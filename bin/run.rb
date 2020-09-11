@@ -32,8 +32,24 @@ if user != nil
       # playlist.songs.each{|song| puts "#{song.artist} - #{song.name}\n"}
       playlist.display_songs
 
+      if Playlist.all != []
+        playlist_choices = Playlist.all.map{|pl| pl.name }
+        playlist_selection = prompt.select("Select the playlist", playlist_choices)
+        # playlist = Playlist.all.find{|pl| pl.name ==  playlist_selection}
+        playlist = Playlist.find_playlist(playlist_selection)
+        # playlist.songs.each{|song| puts "#{song.artist} - #{song.name}\n"}
+        playlist.display_songs
+      else
+        puts "No playlist available"
+      end
+
     elsif selection == "See All Songs"
-      p Song.all.map{|song| song.name }
+      if Song.all != []
+        Song.all.each{|song| puts "#{song.artist} - #{song.name}" }
+      else
+        puts "No Songs Found"
+      end
+
 
     elsif selection == "Rate an Existing Playlist"
       name = prompt.ask("What is the name of the playlist?")
@@ -48,8 +64,7 @@ if user != nil
       playlist = Playlist.find_playlist(playlist_name)
       # playlist = Playlist.find{|pl| pl.name == playlist_name}
       songs = playlist.songs.map do |song|
-        #"#{song.artist} - #{song.name}"
-        song.name
+        "#{song.artist} - #{song.name}"
       end
       add_remove = prompt.select("add/remove", %w(add remove))
       if add_remove == "add"
@@ -71,6 +86,7 @@ if user != nil
           puts "This song is not found"
         end
       end
+      playlist.display_songs
 
     elsif selection == "Delete Playlist"
       choice = user.playlists.map{|pl| pl.name}

@@ -20,10 +20,22 @@ bundle update
 
 
 ## Functionality
+This app lets you perform the following actions through a CLI:
+
+  1. Create New Playlist
+  2. See All Existing Playlists
+  3. See All Songs
+  4. Rate and Existing Playlist
+  5. Edit Your Playlists
+    a) Add Songs
+    b) Remove Songs
+  6. Delete Your Playlists
 
 
 
 ## Contributing
 
+  Sean LaFlam
+  Yunhao (Eddy) Gao
 
 ## License

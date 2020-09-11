@@ -19,7 +19,7 @@ if user != nil
       playlist_choices = Playlist.all.map{|pl| pl.name }
       playlist_selection = prompt.select("Select the playlist", playlist_choices)
       playlist = Playlist.all.find{|pl| pl.name ==  playlist_selection}
-      playlist.songs.each{|song| puts "#{song.name} - #{song.artist}\n"}
+      playlist.songs.each{|song| puts "#{song.artist} - #{song.name}\n"}
 
     elsif selection == "See All Songs"
       p Song.all.map{|song| song.name }
@@ -32,7 +32,7 @@ if user != nil
 
     elsif selection == "Edit One of my Playlists"
       choice = user.playlists.map{|pl| pl.name}
-      playlist_name = prompt.enum_select("Which playlist", choices)
+      playlist_name = prompt.enum_select("Which playlist", choice)
       playlist = Playlist.find{|pl| pl.name == playlist_name}
       songs = playlist.songs.map do |song|
         #"#{song.artist} - #{song.name}"

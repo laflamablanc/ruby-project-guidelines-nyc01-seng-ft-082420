@@ -2,25 +2,25 @@
 5.times do
   Song.create(
     [{name:Faker::Music::GratefulDead.song,
-      genre:Faker::Music.genre}]
+      genre:Faker::Music.genre, artist: "Grateful Dead"}]
   )
 end
 5.times do
   Song.create(
     [{name:Faker::Music::PearlJam.song,
-      genre:Faker::Music.genre}]
+      genre:Faker::Music.genre, artist: "Pearl Jam" }]
   )
 end
 5.times do
   Song.create(
     [{name:Faker::Music::Prince.song,
-      genre:Faker::Music.genre}]
+      genre:Faker::Music.genre, artist: "Prince"}]
   )
 end
 5.times do
   Song.create(
     [{name:Faker::Music::UmphreysMcgee.song,
-      genre:Faker::Music.genre}]
+      genre:Faker::Music.genre, artist: "Umphreys Mcgee"}]
   )
 end
 

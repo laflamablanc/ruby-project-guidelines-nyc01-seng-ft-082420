@@ -28,7 +28,7 @@ class CLI
           playlist.display_songs
 
         elsif selection == "See All Songs"
-          p Song.all.map{|song| song.name }
+          p Song.all.map{|song| "#{song.artist} - #{song.name}" }
 
         elsif selection == "Rate an Existing Playlist"
           name = prompt.ask("What is the name of the playlist?")

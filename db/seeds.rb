@@ -37,5 +37,9 @@ song7 = Song.all[7]
 song8 = Song.all[8]
 song9 = Song.all[9]
 
-playlist1 = Playlist.create(name: "Playlist1", mood: "Happy")
-playlist2 = Playlist.create(name: "Playlist2", mood: "Workout")
+playlist1 = user1.create_playlist(name: "Playlist1", mood: "Happy")
+user1.add_song(song: song1, playlist: playlist1)
+user1.add_song(song: song2, playlist: playlist1)
+user1.add_song(song: song3, playlist: playlist1)
+user1.add_song(song: song4, playlist: playlist1)
+user1.add_song(song: song5, playlist: playlist1)

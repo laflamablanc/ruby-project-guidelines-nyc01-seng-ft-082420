@@ -18,8 +18,10 @@ if user != nil
     elsif selection == "See All Existing Playlists"
       playlist_choices = Playlist.all.map{|pl| pl.name }
       playlist_selection = prompt.select("Select the playlist", playlist_choices)
-      playlist = Playlist.all.find{|pl| pl.name ==  playlist_selection}
-      playlist.songs.each{|song| puts "#{song.artist} - #{song.name}\n"}
+      # playlist = Playlist.all.find{|pl| pl.name ==  playlist_selection}
+      playlist = Playlist.find_playlist(playlist_selection)
+      # playlist.songs.each{|song| puts "#{song.artist} - #{song.name}\n"}
+      playlist.display_songs
 
     elsif selection == "See All Songs"
       p Song.all.map{|song| song.name }
@@ -27,13 +29,15 @@ if user != nil
     elsif selection == "Rate an Existing Playlist"
       name = prompt.ask("What is the name of the playlist?")
       rating = prompt.ask("How much do you want to rate (1-5)?")
-      playlist = Playlist.all.find{|pl| pl.name == name}
+      playlist = Playlist.find_playlist(name)
+      # playlist = Playlist.all.find{|pl| pl.name == name}
       user.rate_playlist(rating: rating, playlist:playlist)
 
     elsif selection == "Edit One of my Playlists"
       choice = user.playlists.map{|pl| pl.name}
       playlist_name = prompt.enum_select("Which playlist", choice)
-      playlist = Playlist.find{|pl| pl.name == playlist_name}
+      playlist = Playlist.find_playlist(playlist_name)
+      # playlist = Playlist.find{|pl| pl.name == playlist_name}
       songs = playlist.songs.map do |song|
         #"#{song.artist} - #{song.name}"
         song.name
@@ -44,6 +48,7 @@ if user != nil
         find_song = Song.all.find{|song| song.name == song_get}
         if find_song != nil
           user.add_song(song: find_song, playlist: playlist)
+          playlist.display_songs
         else
           puts "This song is not found"
         end
@@ -52,6 +57,7 @@ if user != nil
         find_song = Song.all.find{|song| song.name == song_get}
         if find_song != nil
           user.remove_song(song: find_song, playlist: playlist)
+          playlist.display_songs
         else
           puts "This song is not found"
         end
@@ -60,7 +66,8 @@ if user != nil
     elsif selection == "Delete Playlist"
       choice = user.playlists.map{|pl| pl.name}
       playlist_select = prompt.enum_select("Which playlist", choice)
-      playlist = Playlist.all.find{|pl| pl.name == playlist_select}
+      playlist = Playlist.find_playlist(playlist_select)
+      # playlist = Playlist.all.find{|pl| pl.name == playlist_select}
       user.delete_playlist(playlist: playlist)
     end
   end

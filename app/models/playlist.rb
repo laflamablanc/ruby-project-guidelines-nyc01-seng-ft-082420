@@ -10,5 +10,12 @@ class Playlist < ActiveRecord::Base
     avg
   end
 
+  def self.find_playlist(playlist_name)
+    Playlist.all.find{|pl| pl.name ==  playlist_name}
+  end
+
+  def display_songs
+    self.songs.each{|song| puts "#{song.artist} - #{song.name}\n"}
+  end
 
 end

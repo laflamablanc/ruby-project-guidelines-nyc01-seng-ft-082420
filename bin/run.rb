@@ -13,27 +13,47 @@ if user != nil
     if selection == "Create Playlist"
       name = prompt.ask("Playlist name?")
       mood = prompt.select("Playlist mood?", %w(Happy Sad Workout Party))
-      user.create_playlist(name:name, mood:mood)
-
+      playlist = user.create_playlist(name:name, mood:mood)
+      add_or_not = prompt.yes?("Do you want to add songs to it?")
+      if add_or_not == true
+        song_get = prompt.ask("What's the song name?")
+        find_song = Song.all.find{|song| song.name == song_get}
+        if find_song != nil
+          user.add_song(song: find_song, playlist: playlist)
+        else
+          puts "This song is not found"
+        end
+      end
     elsif selection == "See All Existing Playlists"
-      playlist_choices = Playlist.all.map{|pl| pl.name }
-      playlist_selection = prompt.select("Select the playlist", playlist_choices)
-      playlist = Playlist.all.find{|pl| pl.name ==  playlist_selection}
-      playlist.songs.each{|song| puts "#{song.name}\n"}
-
+      if Playlist.all != []
+        playlist_choices = Playlist.all.map{|pl| pl.name }
+        playlist_selection = prompt.select("Select the playlist", playlist_choices)
+        playlist = Playlist.all.find{|pl| pl.name ==  playlist_selection}
+        playlist.songs.each{|song| puts "#{song.name}\n"}
+      else
+        puts "No playlist available"
+      end
     elsif selection == "See All Songs"
-      p Song.all.map{|song| song.name }
+      if Song.all != []
+        p Song.all.map{|song| song.name }
+      else
+        puts "No song found"
+      end
 
     elsif selection == "Rate an Existing Playlist"
       name = prompt.ask("What is the name of the playlist?")
       rating = prompt.ask("How much do you want to rate (1-5)?")
-      playlist = Playlist.all.find{|pl| pl.name == name}
-      user.rate_playlist(rating: rating, playlist:playlist)
+      if Playlist.all != []
+        playlist = Playlist.all.find{|pl| pl.name == name}
+        user.rate_playlist(rating: rating, playlist:playlist)
+      else
+        puts "No playlist available"
+      end
 
     elsif selection == "Edit One of my Playlists"
-      choices = user.playlists.map{|pl| pl.name}
-      playlist_name = prompt.enum_select("Which playlist", choices)
-      playlist = Playlist.find{|pl| pl.name == playlist_name}
+      choice = user.playlists.map{|pl| pl.name}
+      playlist_name = prompt.enum_select("Which playlist", choice)
+      playlist = Playlist.all.find{|pl| pl.name == playlist_name}
       songs = playlist.songs.map do |song|
         #"#{song.artist} - #{song.name}"
         song.name
@@ -58,10 +78,14 @@ if user != nil
       end
 
     elsif selection == "Delete Playlist"
-      choice = user.playlists.map{|pl| pl.name}
-      playlist_select = prompt.enum_select("Which playlist", choice)
-      playlist = Playlist.all.find{|pl| pl.name == playlist_select}
-      user.delete_playlist(playlist: playlist)
+      if Playlist.all != []
+        choice = user.playlists.map{|pl| pl.name}
+        playlist_select = prompt.enum_select("Which playlist", choice)
+        playlist = Playlist.all.find{|pl| pl.name == playlist_select}
+        user.delete_playlist(playlist: playlist)
+      else
+        puts "No playlist available"
+      end
     end
   end
 

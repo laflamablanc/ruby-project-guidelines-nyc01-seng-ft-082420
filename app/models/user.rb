@@ -9,6 +9,7 @@ class User < ActiveRecord::Base
     #type = gets.chomp
     playlist = Playlist.create(name: name, mood: mood, creator_id: self.id)
     UserPlaylist.create(user: self, playlist: playlist)
+    playlist
   end
 
   def add_song(song:, playlist:)

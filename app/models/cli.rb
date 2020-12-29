@@ -7,7 +7,7 @@ class CLI
 
   def start
     prompt = TTY::Prompt.new
-    user = User.all[0]
+    user = User.all[1]
 
     if user != nil
       choices = ("Create Playlist,See All Existing Playlists,See All Songs,Rate an Existing Playlist,Edit One of my Playlists,Delete Playlist,Exit" ).split(",")
